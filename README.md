@@ -262,3 +262,8 @@ y
 6 - Exit
 6
 
+Stage seat configuration :
+We can change the number of rows and colum in Constants.java calss
+
+Hold time for seat:
+We can mofify the hold time in Constants.java calss
