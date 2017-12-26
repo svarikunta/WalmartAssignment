@@ -1,0 +1,186 @@
+package com.walmart.test;
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.wallmart.service.TicketingService;
+import com.wallmart.service.TicketingServiceImpl;
+import com.wallmat.model.Custmore;
+import com.wallmat.model.FindAvailableResponse;
+import com.wallmat.model.ResorvationRequest;
+import com.wallmat.model.ResorvationResponse;
+import com.wallmat.model.Seat;
+import com.wallmat.model.Stage;
+
+
+public class TestTickatingSystem {
+	
+	TicketingService ts= new TicketingServiceImpl();
+
+	@Test
+	public void TestfindAndHeldSeat() {
+		
+		
+		ResorvationRequest request= new ResorvationRequest();
+		ResorvationResponse response = null;
+		Custmore cust = new Custmore("Sam",1);
+		request.setCustmore(cust);
+		request.setReqNumbOfSeats(5);
+		request.setCustPreferedRow('B');
+		ts.displayStage();
+		response=ts.findAndHoldSeats(request);
+		//System.out.println(response.isSucess());
+		ts.displayStage();
+		System.out.println(Stage.seatsAvilable.get());
+		
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(Stage.seatsAvilable.get());
+	}
+	
+	@Test
+	public void testHoldSeats(){
+		
+		ResorvationRequest request= new ResorvationRequest();
+		
+		ResorvationResponse response=null;
+
+		FindAvailableResponse before=null;
+		FindAvailableResponse after=null;
+		
+		Custmore cust = new Custmore("Sam",479569349);
+		request.setCustmore(cust);
+		List<Seat> custPreferdSeats= new ArrayList<Seat>();
+		Seat st1 = new Seat('B', 7);
+		custPreferdSeats.add(st1);
+		Seat st2 = new Seat('C', 7);
+		custPreferdSeats.add(st2);
+		Seat st3 = new Seat('D', 7);
+		custPreferdSeats.add(st3);
+		Seat st4 = new Seat('E', 7);
+		custPreferdSeats.add(st4);
+		Seat st5 = new Seat('F', 7);
+		custPreferdSeats.add(st5);
+		request.setCustPreferdSeats(custPreferdSeats);
+		ts.displayStage();
+		
+		before=ts.findNoOfSeatsAvilable();
+		
+		response=ts.holdSeats(request);
+		
+		after=ts.findNoOfSeatsAvilable();
+		
+		
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatus(), ResorvationResponse.Status.Sucess);
+		Assert.assertEquals(before.getTotalAvailableSeats()-custPreferdSeats.size(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats()+custPreferdSeats.size(),after.getTotalHeldSeats());
+		Assert.assertTrue(compareReqestedAndHeldSeats(request.getCustPreferdSeats(),response.getSeatsHeld()));
+		
+		
+		
+		ts.displayStage();
+
+
+		
+		
+	}
+	
+	
+	@Test
+	public void testHoldSameSeats(){
+		
+		ResorvationRequest request= new ResorvationRequest();
+		
+		ResorvationResponse response=null;
+
+		FindAvailableResponse before=null;
+		FindAvailableResponse after=null;
+		
+		Custmore cust = new Custmore("Sam",479569349);
+		request.setCustmore(cust);
+		List<Seat> custPreferdSeats= new ArrayList<Seat>();
+		Seat st1 = new Seat('B', 6);
+		custPreferdSeats.add(st1);
+		
+		request.setCustPreferdSeats(custPreferdSeats);
+		ts.displayStage();
+		
+		before=ts.findNoOfSeatsAvilable();
+		
+		response=ts.holdSeats(request);
+		
+		after=ts.findNoOfSeatsAvilable();
+		
+		
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatus(), ResorvationResponse.Status.Sucess);
+		Assert.assertEquals(before.getTotalAvailableSeats()-custPreferdSeats.size(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats()+custPreferdSeats.size(),after.getTotalHeldSeats());
+		Assert.assertTrue(compareReqestedAndHeldSeats(request.getCustPreferdSeats(),response.getSeatsHeld()));
+		
+		Seat previousHoldSeat = new Seat('B', 6);
+		custPreferdSeats.clear();
+		custPreferdSeats.add(previousHoldSeat);
+		request.setCustPreferdSeats(custPreferdSeats);
+		
+		
+        before=ts.findNoOfSeatsAvilable();
+		
+		response=ts.holdSeats(request);
+		
+		after=ts.findNoOfSeatsAvilable();
+	
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatus(), ResorvationResponse.Status.Eror);
+		Assert.assertEquals(before.getTotalAvailableSeats(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats(),after.getTotalHeldSeats());
+		
+	
+
+		ts.displayStage();
+
+
+		
+		
+	}
+	
+	private boolean compareReqestedAndHeldSeats(List<Seat> requestedSeats, List<Seat> heldSeats){
+		
+		
+		for(Seat heldSt:heldSeats){
+			
+			if(!contains(requestedSeats,heldSt)){
+				return false;
+			}
+			
+		}
+		return true;
+		
+	}
+	
+	private boolean contains(List<Seat> requestedSeats, Seat heldSt){
+		
+		
+        for(Seat reqSt:requestedSeats){
+        	
+        	if(reqSt.getColNo()==heldSt.getColNo() && reqSt.getRowNo().equals(heldSt.getRowNo()) )
+        		return true;
+			
+		}
+		
+		return false;
+		
+	}
+
+}

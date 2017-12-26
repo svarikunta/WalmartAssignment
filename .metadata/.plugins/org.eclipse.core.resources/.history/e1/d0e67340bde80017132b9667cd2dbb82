@@ -1,0 +1,50 @@
+package com.wallmart.service;
+
+
+import com.wallmat.model.FindAvailableResponse;
+import com.wallmat.model.FindAndHoldRequest;
+import com.wallmat.model.ResorvationResponse;
+
+import com.wallmat.model.Stage;
+
+public class TicketingServiceImpl implements TicketingService {
+	
+	TicketingServiceImplHelper ticketingServiceImplHelper = new TicketingServiceImplHelper();
+	
+	@Override
+	public FindAvailableResponse findNoOfSeatsAvilable() {
+		
+		return ticketingServiceImplHelper.findNoOfSeatsAvilable();
+	}
+
+	@Override
+	public ResorvationResponse findAndHoldSeats(FindAndHoldRequest request) {
+		
+		return ticketingServiceImplHelper.findAvilableSeatAndHeld(request);
+			
+	}
+
+	@Override
+	public ResorvationResponse reserveAndCommitSeats(FindAndHoldRequest request) {
+		
+		return ticketingServiceImplHelper.reserveAndCommit(request);
+		
+		
+	}
+	
+	
+	@Override
+	public ResorvationResponse holdSeats(FindAndHoldRequest request) {
+		
+		return ticketingServiceImplHelper.holdSeats(request);
+		
+		
+	}
+
+	public void displayStage(){
+		
+		ticketingServiceImplHelper.displayStage();
+
+	}
+
+}

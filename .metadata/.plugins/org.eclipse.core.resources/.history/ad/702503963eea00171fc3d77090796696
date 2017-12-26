@@ -1,0 +1,73 @@
+package com.wallmat.model;
+
+public class Seat {
+	
+	 
+
+	private Character RowNo;
+	private int colNo;
+	private Custmore custmore;
+		     
+	private State state;  
+	
+	public enum State {
+	       A, H, R;
+	     };
+	
+	
+	public State getState() {
+		return state;
+	}
+
+
+	public void setState(State status) {
+		this.state = status;
+	}
+
+
+	public Seat(Character rowNo, int colNo) {
+		super();
+		RowNo = rowNo;
+		this.colNo = colNo;
+		this.custmore=null;
+		this.state=State.A;
+	}
+	
+	
+	public Custmore getCustmore() {
+		return custmore;
+	}
+
+
+	public void setCustmore(Custmore custmore) {
+		this.custmore = custmore;
+	}
+
+
+	public Character getRowNo() {
+		return RowNo;
+	}
+	public void setRowNo(Character rowNo) {
+		RowNo = rowNo;
+	}
+	public int getColNo() {
+		return colNo;
+	}
+	public void setColNo(int colNo) {
+		this.colNo = colNo;
+	}
+	public boolean isHeld() {
+		return (this.state.equals(State.H));
+	}
+
+	public boolean isAvilable() {
+		return (this.state.equals(State.A));
+	}
+	
+	
+	public boolean isReserved() {
+		return (this.state.equals(State.R));
+	}
+
+	
+}

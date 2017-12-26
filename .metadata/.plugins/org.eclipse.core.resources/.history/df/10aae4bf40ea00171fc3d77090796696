@@ -1,0 +1,29 @@
+package com.walmat.model;
+
+public class Custmore {
+	
+	String custmoreName;
+	String custmoreId;
+	
+	public Custmore(String custName, String custId){
+		this.custmoreName=custName;
+		this.custmoreId=custId;
+	}
+
+	public String getCustmoreName() {
+		return custmoreName;
+	}
+
+	public void setCustmoreName(String custmoreName) {
+		this.custmoreName = custmoreName;
+	}
+
+	public String getCustmoreId() {
+		return custmoreId;
+	}
+
+	public void setCustmoreId(String custmoreId) {
+		this.custmoreId = custmoreId;
+	}
+
+}

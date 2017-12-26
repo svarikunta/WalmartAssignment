@@ -1,0 +1,14 @@
+package com.walmart.Constats;
+
+public interface Constants {
+	
+	
+	public static final int HOLD_TIME = 100000;
+	
+	public static final Character STARTING_ROW= 'A';
+	
+	public static final Character ENDING_ROW= 'G';
+	
+	public static final int NUMBER_ROWS= 10;
+
+}

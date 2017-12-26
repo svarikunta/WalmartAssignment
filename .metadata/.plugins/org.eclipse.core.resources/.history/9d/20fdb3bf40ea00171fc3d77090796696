@@ -1,0 +1,168 @@
+package com.walmart.test;
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.walmart.Constats.Constants;
+import com.walmart.service.TicketingService;
+import com.walmart.service.TicketingServiceImpl;
+import com.walmat.model.Custmore;
+import com.walmat.model.FindAndHoldRequest;
+import com.walmat.model.FindAndHoldResponse;
+import com.walmat.model.FindAvailableResponse;
+import com.walmat.model.ReserveAndCommitRequest;
+import com.walmat.model.ReserveAndCommitResponse;
+import com.walmat.model.Seat;
+
+
+public class TestReserveAndCommit {
+	
+	TicketingService ts= new TicketingServiceImpl();
+
+
+	
+	@Test
+	public void testHoldSeats(){
+		
+		FindAndHoldRequest request= new FindAndHoldRequest();
+		
+		FindAndHoldResponse response=null;
+
+		FindAvailableResponse before=null;
+		FindAvailableResponse after=null;
+		
+		Custmore cust = new Custmore("Sam","1479569349");
+		request.setCustmore(cust);
+		List<Seat> custPreferdSeats= new ArrayList<Seat>();
+		Seat st1 = new Seat('B', 2);
+		custPreferdSeats.add(st1);
+		Seat st2 = new Seat('C', 2);
+		custPreferdSeats.add(st2);
+		Seat st3 = new Seat('D', 2);
+		custPreferdSeats.add(st3);
+		Seat st4 = new Seat('E', 2);
+		custPreferdSeats.add(st4);
+		Seat st5 = new Seat('F', 2);
+		custPreferdSeats.add(st5);
+		request.setCustPreferdSeats(custPreferdSeats);
+		ts.displaySeatMap();
+		
+		before=ts.findNoOfSeatsAvilable();
+		
+		response=ts.holdSeats(request);
+		
+		after=ts.findNoOfSeatsAvilable();
+		
+		
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Sucess);
+		Assert.assertEquals(before.getTotalAvailableSeats()-custPreferdSeats.size(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats()+custPreferdSeats.size(),after.getTotalHeldSeats());
+		Assert.assertTrue(compareReqestedAndHeldSeats(request.getCustPreferdSeats(),response.getSeatsHeld()));
+		
+		ts.displaySeatMap();
+		
+		ReserveAndCommitRequest  reserveAndCommitRequest= new ReserveAndCommitRequest();
+		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
+		reserveAndCommitRequest.setCustmore(cust);
+		
+		before=ts.findNoOfSeatsAvilable();
+		
+		ReserveAndCommitResponse reserveAndCommitResponse=ts.reserveAndCommitSeats(reserveAndCommitRequest);
+		
+		after=ts.findNoOfSeatsAvilable();
+		
+		Assert.assertNotNull(reserveAndCommitResponse);
+		Assert.assertEquals(reserveAndCommitResponse.getStatus(), ReserveAndCommitResponse.Status.Sucess);
+		
+		Assert.assertEquals(before.getTotalAvailableSeats(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats()-reserveAndCommitRequest.getSeatsHeld().size(),after.getTotalHeldSeats());
+		Assert.assertEquals(before.getTotalReservedSeats()+reserveAndCommitRequest.getSeatsHeld().size(),after.getTotalReservedSeats());
+		
+		ts.displaySeatMap();
+
+	}
+	
+		
+	@Test
+	public void TestHoldSeatTimer() {
+		
+		
+		FindAndHoldRequest request= new FindAndHoldRequest();
+		FindAndHoldResponse response = null;
+		
+		FindAvailableResponse before=null;
+		FindAvailableResponse after=null;
+		
+		Custmore cust = new Custmore("Harry","2134345678");
+		request.setCustmore(cust);
+		request.setReqNumbOfSeats(5);
+		request.setCustPreferedRow('B');
+		ts.displaySeatMap();
+		
+		before=ts.findNoOfSeatsAvilable();
+		response=ts.findAndHoldSeats(request);
+		after=ts.findNoOfSeatsAvilable();
+	
+		ts.displaySeatMap();
+		
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Sucess);
+		Assert.assertEquals(before.getTotalAvailableSeats(),after.getTotalAvailableSeats()+request.getReqNumbOfSeats());
+		Assert.assertEquals(before.getTotalHeldSeats()+request.getReqNumbOfSeats(),after.getTotalHeldSeats());
+	
+		
+		try {
+			Thread.sleep(Constants.HOLD_TIME+1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ReserveAndCommitRequest  reserveAndCommitRequest= new ReserveAndCommitRequest();
+		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
+		reserveAndCommitRequest.setCustmore(cust);
+		ReserveAndCommitResponse reserveAndCommitResponse=ts.reserveAndCommitSeats(reserveAndCommitRequest);
+		after=ts.findNoOfSeatsAvilable();
+		Assert.assertNotNull(reserveAndCommitResponse);
+		Assert.assertEquals(before.getTotalAvailableSeats(),after.getTotalAvailableSeats());
+		Assert.assertEquals(before.getTotalHeldSeats(),after.getTotalHeldSeats());
+		Assert.assertEquals(before.getTotalReservedSeats(),after.getTotalReservedSeats());
+		ts.displaySeatMap();
+		//System.out.println(Stage.seatsAvilable.get());
+	}
+	
+	private boolean compareReqestedAndHeldSeats(List<Seat> requestedSeats, List<Seat> heldSeats){
+		
+		
+		for(Seat heldSt:heldSeats){
+			
+			if(!contains(requestedSeats,heldSt)){
+				return false;
+			}
+			
+		}
+		return true;
+		
+	}
+	
+	private boolean contains(List<Seat> requestedSeats, Seat heldSt){
+		
+		
+        for(Seat reqSt:requestedSeats){
+        	
+        	if(reqSt.getColNo()==heldSt.getColNo() && reqSt.getRowNo().equals(heldSt.getRowNo()) )
+        		return true;
+			
+		}
+		
+		return false;
+		
+	}
+
+}

@@ -1,0 +1,21 @@
+package com.wallmart.service;
+
+import com.wallmat.model.FindAvailableResponse;
+import com.wallmat.model.ReserveAndCommitRequest;
+import com.wallmat.model.ReserveAndCommitResponse;
+import com.wallmat.model.FindAndHoldRequest;
+import com.wallmat.model.FindAndHoldResponse;
+
+public interface TicketingService {
+
+	public FindAvailableResponse findNoOfSeatsAvilable();
+
+	public FindAndHoldResponse findAndHoldSeats(FindAndHoldRequest request);
+
+	public ReserveAndCommitResponse reserveAndCommitSeats(ReserveAndCommitRequest request);
+
+	public FindAndHoldResponse holdSeats(FindAndHoldRequest request);
+
+	public void displaySeatMap();
+
+}

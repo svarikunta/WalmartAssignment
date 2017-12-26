@@ -1,0 +1,97 @@
+package com.walmart.utility;
+
+import java.util.Scanner;
+
+import com.wallmart.service.TicketingService;
+import com.wallmart.service.TicketingServiceImpl;
+import com.wallmat.model.Custmore;
+import com.wallmat.model.FindAndHoldRequest;
+import com.wallmat.model.ResorvationResponse;
+
+public class TicketServiceUtility {
+
+	public static void main(String Args[]) {
+
+		TicketingService ts = new TicketingServiceImpl();
+		FindAndHoldRequest request = new FindAndHoldRequest();
+		ResorvationResponse response = null;
+
+		Scanner input = new Scanner(System.in);
+		int selection;
+
+		do {
+			
+			System.out.println("1 - Disply seat Map");
+			System.out.println("2 - Find and Hold Seats");
+			System.out.println("3 - Reserve and Commit Hold seats");
+			System.out.println("4 - Exit");
+			
+			selection = input.nextInt();
+			switch (selection) {
+			case 1:
+				ts.displayStage();
+				break;
+
+			case 2:
+
+				findAndHoldSeats(request, response, input, ts);
+
+				break;
+
+			case 3:
+				System.out.println("Enter amount to be credited");
+				break;
+			}
+
+		} while (selection < 4);
+
+		input.close();
+
+	}
+
+	public static void findAndHoldSeats(FindAndHoldRequest request, ResorvationResponse response, Scanner input,
+			TicketingService ts) {
+
+		System.out.println("Enter Custmore Name \n");
+		String name = input.next();
+		System.out.println("Enter Ph Number \n");
+		int id = input.nextInt();
+		Custmore cust = new Custmore(name, id);
+		request.setCustmore(cust);
+		System.out.println("Enter Number of seats \n");
+		int reqNumSeats = input.nextInt();
+		request.setReqNumbOfSeats(reqNumSeats);
+		int selection;
+		do {
+
+			System.out.println("1 - With Custmore prefered Row");
+			System.out.println("2 - With Custmore prefered Row and Column ");
+			System.out.println("3 - Best Ailable \n");
+			System.out.println("4 - Best Ailable \n");
+
+			selection = input.nextInt();
+			switch (selection) {
+			case 1:
+				System.out.println("Enter Prefered Row only Single Character betwen A  to Z");
+				Character row = input.next().toUpperCase().charAt(0);
+				request.setCustPreferedRow(row);
+				response = ts.findAndHoldSeats(request);
+
+				break;
+
+			case 2:
+
+				System.out.println("Enter Custmore Ph number");
+
+				break;
+
+			case 3:
+				System.out.println("Enter amount to be credited");
+				break;
+			}
+
+		} while (selection < 4);
+
+	}
+
+}

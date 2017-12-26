@@ -1,0 +1,5 @@
+package com.wallmat.model;
+
+public class FindAvailableResponse {
+
+}
