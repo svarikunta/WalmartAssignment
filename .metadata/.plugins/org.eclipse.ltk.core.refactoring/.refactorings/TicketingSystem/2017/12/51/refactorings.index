@@ -1,9 +1,0 @@
-1513603514329	Rename method 'holdAvilableSeats'
-1513608030005	Rename method 'findAndHeldSeat'
-1513608072825	Rename method 'reserveAndCommit'
-1513618382903	Rename type 'Status'
-1513619075541	Delete element
-1513619113635	Rename field 'status'
-1513619221910	Delete element
-1513619321470	Rename method 'getStatus'
-1513619342266	Rename method 'setStatus'
