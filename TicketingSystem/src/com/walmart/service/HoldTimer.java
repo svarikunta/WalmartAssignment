@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.swing.Timer;
 
-import com.walmart.Constats.Constants;
-import com.walmat.model.Seat;
-import com.walmat.model.Stage;
+import com.walmart.constants.Constants;
+import com.walmart.model.Seat;
+import com.walmart.model.Stage;
 
 public class HoldTimer {
 
@@ -27,8 +27,8 @@ public class HoldTimer {
 
 						if (st.isHeld()) {
 							st.setState(Seat.State.A);
-							st.setCustmore(null);
-							Stage.seatsAvilable.getAndIncrement();
+							st.setCustomer(null);
+							Stage.seatsAvailable.getAndIncrement();
 							Stage.seatsHeld.getAndDecrement();
 						}
 					

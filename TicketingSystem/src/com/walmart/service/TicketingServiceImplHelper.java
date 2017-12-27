@@ -3,15 +3,15 @@ package com.walmart.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.walmart.Constats.Constants;
-import com.walmat.model.Customer;
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.ReserveAndCommitRequest;
-import com.walmat.model.ReserveAndCommitResponse;
-import com.walmat.model.Seat;
-import com.walmat.model.Stage;
+import com.walmart.constants.Constants;
+import com.walmart.model.Customer;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.ReserveAndCommitRequest;
+import com.walmart.model.ReserveAndCommitResponse;
+import com.walmart.model.Seat;
+import com.walmart.model.Stage;
 
 public class TicketingServiceImplHelper {
 
@@ -37,7 +37,7 @@ public class TicketingServiceImplHelper {
 			return holdSeats(request);
 		}
 		
-		response.setCustmore(request.getCustmore());
+		response.setCustmore(request.getCustomer());
 
 		Character custPreferdRow = request.getCustPreferredRow();
 
@@ -45,10 +45,10 @@ public class TicketingServiceImplHelper {
 
 		int reqNumbOfSeats = request.getReqNumbOfSeats();
 		
-		if (reqNumbOfSeats > Stage.seatsAvilable.get()) {
+		if (reqNumbOfSeats > Stage.seatsAvailable.get()) {
 
 			response.setStatus(FindAndHoldResponse.Status.SeatsNotAvilable);
-			response.setMesaage("Currently, " + Stage.seatsAvilable.get() + " seats are available so couldn’t book "
+			response.setMesaage("Currently, " + Stage.seatsAvailable.get() + " seats are available so couldn’t book "
 					+ reqNumbOfSeats + " tickets ");
 		}
 
@@ -57,18 +57,18 @@ public class TicketingServiceImplHelper {
 			availableSeats.addAll(findAvailableSeatsInARow(custPreferdRow, reqNumbOfSeats));
 
 			if (availableSeats.size() == reqNumbOfSeats) {
-				if (holdAvilableSeats(availableSeats, request.getCustmore())) {
+				if (holdAvilableSeats(availableSeats, request.getCustomer())) {
 					response.setStatus(FindAndHoldResponse.Status.Sucess);
 					response.setMesaage("Requested " + reqNumbOfSeats + " seats are in Hold for "
 							+ Constants.HOLD_TIME / 1000 + " seconds please reserve before hold time");
 					response.setSeatsHeld(availableSeats);
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 
 					return response;
 				} else {
 					response.setStatus(FindAndHoldResponse.Status.Eror);
 					response.setMesaage("Error during Hold process please retry again");
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 					return response;
 				}
 
@@ -77,21 +77,21 @@ public class TicketingServiceImplHelper {
 				availableSeats.addAll(
 						findAvailableSeatsInNearestRows(custPreferdRow, reqNumbOfSeats - availableSeats.size()));
 				
-				response.setBestAvilableSeats(availableSeats);
+				response.setBestAvailableSeats(availableSeats);
 
 				if (availableSeats.size() == reqNumbOfSeats) {
 					response.setStatus(FindAndHoldResponse.Status.NeedConfirm);
 					response.setMesaage("Requested " + reqNumbOfSeats
-							+ " seats are not availabel in same row please review availabe seats and confirm Y/N");
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+							+ " seats are not availabel in same row please review available seats and confirm Y/N");
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 					return response;
 				}
 
 				if (availableSeats.size() < reqNumbOfSeats) {
 					response.setStatus(FindAndHoldResponse.Status.SeatsNotAvilable);
-					response.setMesaage("Currently, " + Stage.seatsAvilable.get()
+					response.setMesaage("Currently, " + Stage.seatsAvailable.get()
 							+ " seats are available so couldn’t book " + reqNumbOfSeats + " tickets ");
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 					return response;
 				}
 
@@ -103,28 +103,28 @@ public class TicketingServiceImplHelper {
 
 			if (availableSeats.size() == reqNumbOfSeats) {
 
-				if (holdAvilableSeats(availableSeats, request.getCustmore())) {
+				if (holdAvilableSeats(availableSeats, request.getCustomer())) {
 					response.setStatus(FindAndHoldResponse.Status.Sucess);
 					response.setMesaage("Requested " + reqNumbOfSeats + " seats are in Hold for "
 							+ Constants.HOLD_TIME / 1000 + "seconds please reserve before hold time");
 					response.setSeatsHeld(availableSeats);
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 					return response;
 				} else {
 					response.setStatus(FindAndHoldResponse.Status.Eror);
 					response.setMesaage("Error during Hold process please retry again");
-					response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+					response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 					return response;
 				}
 			}
 
 			if (availableSeats.size() < reqNumbOfSeats) {
 
-				response.setBestAvilableSeats(availableSeats);
+				response.setBestAvailableSeats(availableSeats);
 				response.setStatus(FindAndHoldResponse.Status.SeatsNotAvilable);
-				response.setMesaage("Currently, " + Stage.seatsAvilable.get() + " seats are available so couldn’t book "
+				response.setMesaage("Currently, " + Stage.seatsAvailable.get() + " seats are available so couldn’t book "
 						+ reqNumbOfSeats + " tickets ");
-				response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+				response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 				return response;
 			}
 		}
@@ -135,12 +135,12 @@ public class TicketingServiceImplHelper {
 
 	/*
 	 * This method takes the customer preferred seats with row and column and
-	 * holds if they are not available.
+	 * holds if they are available.
 	 */
 	public FindAndHoldResponse holdSeats(FindAndHoldRequest request) {
 
-		List<Seat> avilableSeats = request.getCustPreferdSeats();
-		Customer customer = request.getCustmore();
+		List<Seat> avilableSeats = request.getCustPreferredSeats();
+		Customer customer = request.getCustomer();
 		FindAndHoldResponse response = new FindAndHoldResponse();
 
 		if (holdAvilableSeats(avilableSeats, customer)) {
@@ -148,13 +148,13 @@ public class TicketingServiceImplHelper {
 			response.setMesaage("Requested " + avilableSeats.size() + " tickets are in Hold for "
 					+ Constants.HOLD_TIME / 1000 + "seconds please resorve before hold time");
 			response.setSeatsHeld(avilableSeats);
-			response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+			response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 			return response;
 
 		} else {
 			response.setStatus(FindAndHoldResponse.Status.Eror);
 			response.setMesaage("Requested Seats are not avialable");
-			response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+			response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 			return response;
 		}
 
@@ -170,11 +170,11 @@ public class TicketingServiceImplHelper {
 
 			Seat st = stage.getSeatMap().get(key);
 
-			if (st.isAvilable()) {
+			if (st.isAvailable()) {
 				st.setState(Seat.State.H);
-				st.setCustmore(customer);
+				st.setCustomer(customer);
 				heldSeats.add(st);
-				Stage.seatsAvilable.getAndDecrement();
+				Stage.seatsAvailable.getAndDecrement();
 				Stage.seatsHeld.getAndIncrement();
 				stage.getSeatMap().put(key, st);
 
@@ -206,8 +206,8 @@ public class TicketingServiceImplHelper {
 			if (st.isHeld()) {
 
 				st.setState(Seat.State.A);
-				st.setCustmore(null);
-				Stage.seatsAvilable.getAndIncrement();
+				st.setCustomer(null);
+				Stage.seatsAvailable.getAndIncrement();
 				Stage.seatsHeld.getAndDecrement();
 				st = stage.getSeatMap().put(key, st);
 
@@ -228,8 +228,8 @@ public class TicketingServiceImplHelper {
 			if (st.isReserved()) {
 
 				st.setState(Seat.State.A);
-				st.setCustmore(null);
-				Stage.seatsAvilable.getAndIncrement();
+				st.setCustomer(null);
+				Stage.seatsAvailable.getAndIncrement();
 				Stage.seatsReserved.getAndDecrement();
 				st = stage.getSeatMap().put(key, st);
 
@@ -250,16 +250,16 @@ public class TicketingServiceImplHelper {
 		List<Seat> reservedList = null;
 		Customer cust = request.getCustmore();
 		ReserveAndCommitResponse response = new ReserveAndCommitResponse();
-		response.setCustmore(request.getCustmore());
+		response.setCustomer(request.getCustmore());
 
 		reservedList = reserveAndCommit(heldSeats, cust);
 
 		if (heldSeats.size() == reservedList.size()) {
 			response.setStatus(ReserveAndCommitResponse.Status.Sucess);
-			response.setMesaage(" Requested " + heldSeats.size() + " seats are reserved");
+			response.setMessage(" Requested " + heldSeats.size() + " seats are reserved");
 		} else {
 			response.setStatus(ReserveAndCommitResponse.Status.Eror);
-			response.setMesaage("Seats hold time passed. Please retry booking");
+			response.setMessage("Seats hold time passed. Please retry booking");
 
 		}
 
@@ -279,9 +279,9 @@ public class TicketingServiceImplHelper {
 			st = stage.getSeatMap().get(key);
 
 			if (st.isHeld()) {
-				if (null != st.getCustmore()
-						&& st.getCustmore().getCustmoreName().equals(customer.getCustmoreName())
-						&& st.getCustmore().getCustmorePhNo().equals(customer.getCustmorePhNo())) {
+				if (null != st.getCustomer()
+						&& st.getCustomer().getCustomerName().equals(customer.getCustomerName())
+						&& st.getCustomer().getCustomerPhNo().equals(customer.getCustomerPhNo())) {
 
 					st.setState(Seat.State.R);
 					Stage.seatsReserved.getAndIncrement();
@@ -312,12 +312,12 @@ public class TicketingServiceImplHelper {
 
 		List<Seat> availableSeats = new ArrayList<Seat>();
 
-		for (int col = 1; col <= stage.getNoColums(); col++) {
+		for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 			String key = preferredRow.toString() + col;
 			Seat st = stage.getSeatMap().get(key);
 
-			if (st.isAvilable()) {
+			if (st.isAvailable()) {
 
 				availableSeats.add(st);
 				count++;
@@ -338,12 +338,12 @@ public class TicketingServiceImplHelper {
 		// Check for Available Seats in the back rows.
 		for (Character row = (char) (preferredRow+1); row <= stage.getNoOfRow(); row++) {
 
-			for (int col = 1; col <= stage.getNoColums(); col++) {
+			for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 				String key = row.toString() + col;
 				Seat st = stage.getSeatMap().get(key);
 
-				if (st.isAvilable()) {
+				if (st.isAvailable()) {
 
 					availableSeats.add(st);
 					count++;
@@ -357,12 +357,12 @@ public class TicketingServiceImplHelper {
 
 		// Check for Available Seats in the front rows.
 		for (Character row = (char) (preferredRow-1); row >= 'A'; row--) {
-			for (int col = 1; col <= stage.getNoColums(); col++) {
+			for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 				String key = row.toString() + col;
 				Seat st = stage.getSeatMap().get(key);
 
-				if (st.isAvilable()) {
+				if (st.isAvailable()) {
 
 					availableSeats.add(st);
 					count++;
@@ -384,12 +384,12 @@ public class TicketingServiceImplHelper {
 
 		for (Character row = 'A'; row <= stage.getNoOfRow(); row++) {
 
-			for (int col = 1; col <= stage.getNoColums(); col++) {
+			for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 				String key = row.toString() + col;
 				Seat st = stage.getSeatMap().get(key);
 
-				if (st.isAvilable()) {
+				if (st.isAvailable()) {
 
 					availableSeats.add(st);
 					count++;
@@ -409,9 +409,9 @@ public class TicketingServiceImplHelper {
 	 * This method displays seat map (non-Javadoc)
 	 */
 
-	public void displayStage() {
+	public void displaySeatMap() {
 
-		for (int col = 1; col <= stage.getNoColums(); col++) {
+		for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 			System.out.print("\t" + col);
 
@@ -423,7 +423,7 @@ public class TicketingServiceImplHelper {
 
 			System.out.print(row);
 
-			for (int col = 1; col <= stage.getNoColums(); col++) {
+			for (int col = 1; col <= stage.getNoColumns(); col++) {
 
 				String key = row.toString() + col;
 				Seat st = stage.getSeatMap().get(key);
@@ -434,7 +434,7 @@ public class TicketingServiceImplHelper {
 			System.out.println();
 
 		}
-		System.out.println("A - Available : " + Stage.seatsAvilable);
+		System.out.println("A - Available : " + Stage.seatsAvailable);
 		System.out.println("H - Hold : " + Stage.seatsHeld);
 		System.out.println("A - Reserved : " + Stage.seatsReserved);
 	}
@@ -446,7 +446,7 @@ public class TicketingServiceImplHelper {
 
 		FindAvailableResponse response = new FindAvailableResponse();
 
-		response.setTotalAvailableSeats(Stage.seatsAvilable.get());
+		response.setTotalAvailableSeats(Stage.seatsAvailable.get());
 		response.setTotalHeldSeats(Stage.seatsHeld.get());
 		response.setTotalReservedSeats(Stage.seatsReserved.get());
 

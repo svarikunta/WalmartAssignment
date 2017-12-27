@@ -1,24 +1,24 @@
-package com.walmat.model;
+package com.walmart.model;
 
 import java.util.List;
 
 public class FindAndHoldRequest {
 	
 	boolean userConfirm;
-	Customer Customer;
-	int reqNumbOfSeats;
+	Customer customer;
+	int reqNoOfSeats;
 	Character custPreferredRow;
-	List<Seat> custPreferdSeats;
+	List<Seat> custPreferredSeats;
 	List<Seat> bestAvailableSeats;
 	List<Seat> seatsHeld;
 	List<Seat> seatsReserved;
 	
 	
-	public List<Seat> getCustPreferdSeats() {
-		return custPreferdSeats;
+	public List<Seat> getCustPreferredSeats() {
+		return custPreferredSeats;
 	}
-	public void setCustPreferdSeats(List<Seat> custPreferdSeats) {
-		this.custPreferdSeats = custPreferdSeats;
+	public void setCustPreferredSeats(List<Seat> custPreferredSeats) {
+		this.custPreferredSeats = custPreferredSeats;
 	}
 	public boolean isUserConfirm() {
 		return userConfirm;
@@ -27,17 +27,17 @@ public class FindAndHoldRequest {
 		this.userConfirm = userConfirm;
 	}
 
-	public Customer getCustmore() {
-		return Customer;
+	public Customer getCustomer() {
+		return customer;
 	}
-	public void setCustmore(Customer customer) {
-		Customer = customer;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	public int getReqNumbOfSeats() {
-		return reqNumbOfSeats;
+		return reqNoOfSeats;
 	}
-	public void setReqNumbOfSeats(int reqNumbOfSeats) {
-		this.reqNumbOfSeats = reqNumbOfSeats;
+	public void setReqNoOfSeats(int reqNoOfSeats) {
+		this.reqNoOfSeats = reqNoOfSeats;
 	}
 	public Character getCustPreferredRow() {
 		return custPreferredRow;

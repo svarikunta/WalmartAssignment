@@ -8,13 +8,13 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.walmart.model.Customer;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.Seat;
 import com.walmart.service.TicketingService;
 import com.walmart.service.TicketingServiceImpl;
-import com.walmat.model.Customer;
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.Seat;
 
 
 public class TestHoldSeats {
@@ -34,7 +34,7 @@ public class TestHoldSeats {
 		FindAvailableResponse after=null;
 		
 		Customer cust = new Customer("Sam","4795693419");
-		request.setCustmore(cust);
+		request.setCustomer(cust);
 		List<Seat> custPreferdSeats= new ArrayList<Seat>();
 		Seat st1 = new Seat('B', 7);
 		custPreferdSeats.add(st1);
@@ -46,14 +46,14 @@ public class TestHoldSeats {
 		custPreferdSeats.add(st4);
 		Seat st5 = new Seat('F', 7);
 		custPreferdSeats.add(st5);
-		request.setCustPreferdSeats(custPreferdSeats);
+		request.setCustPreferredSeats(custPreferdSeats);
 		ts.displaySeatMap();
 		
-		before=ts.findNoOfSeatsAvilable();
+		before=ts.findNoOfSeatsAvailable();
 		
 		response=ts.holdSeats(request);
 		
-		after=ts.findNoOfSeatsAvilable();
+		after=ts.findNoOfSeatsAvailable();
 		
 		
 		Assert.assertNotNull(response);
@@ -78,19 +78,19 @@ public class TestHoldSeats {
 		FindAvailableResponse after=null;
 		
 		Customer cust = new Customer("Sam","4795693419");
-		request.setCustmore(cust);
+		request.setCustomer(cust);
 		List<Seat> custPreferdSeats= new ArrayList<Seat>();
 		Seat st1 = new Seat('B', 6);
 		custPreferdSeats.add(st1);
 		
-		request.setCustPreferdSeats(custPreferdSeats);
+		request.setCustPreferredSeats(custPreferdSeats);
 		ts.displaySeatMap();
 		
-		before=ts.findNoOfSeatsAvilable();
+		before=ts.findNoOfSeatsAvailable();
 		
 		response=ts.holdSeats(request);
 		
-		after=ts.findNoOfSeatsAvilable();
+		after=ts.findNoOfSeatsAvailable();
 		
 		
 		Assert.assertNotNull(response);
@@ -102,13 +102,13 @@ public class TestHoldSeats {
 		Seat previousHoldSeat = new Seat('B', 6);
 		custPreferdSeats.clear();
 		custPreferdSeats.add(previousHoldSeat);
-		request.setCustPreferdSeats(custPreferdSeats);
+		request.setCustPreferredSeats(custPreferdSeats);
 		
-        before=ts.findNoOfSeatsAvilable();
+        before=ts.findNoOfSeatsAvailable();
 		
 		response=ts.holdSeats(request);
 		
-		after=ts.findNoOfSeatsAvilable();
+		after=ts.findNoOfSeatsAvailable();
 	
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Eror);

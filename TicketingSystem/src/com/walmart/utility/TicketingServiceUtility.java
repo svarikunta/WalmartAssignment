@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.walmart.Constats.Constants;
+import com.walmart.constants.Constants;
+import com.walmart.model.Customer;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.ReserveAndCommitRequest;
+import com.walmart.model.ReserveAndCommitResponse;
+import com.walmart.model.Seat;
 import com.walmart.service.TicketingService;
 import com.walmart.service.TicketingServiceImpl;
-import com.walmat.model.Customer;
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.ReserveAndCommitRequest;
-import com.walmat.model.ReserveAndCommitResponse;
-import com.walmat.model.Seat;
 
-public class TicketServiceUtility {
+public class TicketingServiceUtility {
 
 	public static void main(String Args[]) {
 
@@ -28,13 +28,13 @@ public class TicketServiceUtility {
 		do {
 
 			System.out.println();
-			System.out.println("1 - Display seat Map");
-			System.out.println("2 - Find Available, Held and Reserved seats");
-			System.out.println("3 - Find and Hold Seats with customer preferred row and Reserve held seats");
+			System.out.println("1 - Display Seat Map");
+			System.out.println("2 - Find Available, Hold and Reserved seats");
+			System.out.println("3 - Find and Hold Seats with customer preferred row and reserve held seats");
 			System.out.println(
-					"4 - Hold seats with customer with customer Preferred row and column and Reserve held seats");
+					"4 - Hold seats with customer preferred row and column and reserve held seats");
 			System.out.println(
-					"5 -Find and Hold Seats with system preferred best available and Reserve held seats");
+					"5 -Find and Hold Seats with system preferred best available and reserve held seats");
 			System.out.println("6 - Exit");
 
 			selection = input.nextInt();
@@ -52,7 +52,7 @@ public class TicketServiceUtility {
 
 			case 2:
 
-				FindAvailableResponse findAvailableResponse = ts.findNoOfSeatsAvilable();
+				FindAvailableResponse findAvailableResponse = ts.findNoOfSeatsAvailable();
 				System.out.println("No of Available seats: " + findAvailableResponse.getTotalAvailableSeats());
 				System.out.println("No of Held seats: " + findAvailableResponse.getTotalHeldSeats());
 				System.out.println("No of Reserved seats: " + findAvailableResponse.getTotalReservedSeats());
@@ -60,54 +60,54 @@ public class TicketServiceUtility {
 
 			case 3:
 				
-				System.out.println("Enter Customer Name");
+				System.out.println("Enter customer name");
 				String name = input.next();
-				System.out.println("Enter Ph Number");
+				System.out.println("Enter customer Ph number");
 				String phNum = input.next();
 				
 				while(!phNum.matches("[0-9]{10}")){
-					System.out.println("Wrong input enter only 10 digits ");
+					System.out.println("Wrong input. Enter only 10 digits ");
 					phNum = input.next();
 				}
 				Customer cust = new Customer(name, phNum);
 
-				findAndHoldRequest.setCustmore(cust);
-				System.out.println("Enter Preferred Row only Single Character between A  to " + Constants.ENDING_ROW);
+				findAndHoldRequest.setCustomer(cust);
+				System.out.println("Enter preferred Row only Single Character between A to " + Constants.ENDING_ROW);
 				Character row = input.next().toUpperCase().charAt(0);
 				
 				while(!validateRow(row)){
 					
-					System.out.println("Wrong input Enter Preferred Row only Single Character between A  to " + Constants.ENDING_ROW);
+					System.out.println("Wrong input. Please enter preferred Row only Single Character between A  to " + Constants.ENDING_ROW);
 					row = input.next().toUpperCase().charAt(0);
 				}
 				
 				findAndHoldRequest.setCustPreferredRow(row);
 				System.out.println("Enter required number of seats");
 				int reqNumbOfSeats = input.nextInt();
-				findAndHoldRequest.setReqNumbOfSeats(reqNumbOfSeats);
+				findAndHoldRequest.setReqNoOfSeats(reqNumbOfSeats);
 				findAndHoldResponse = ts.findAndHoldSeats(findAndHoldRequest);
 				if (findAndHoldResponse.getStatus().equals(FindAndHoldResponse.Status.NeedConfirm)) {
 					
-					for(Seat st:findAndHoldResponse.getBestAvilableSeats()){
+					for(Seat st:findAndHoldResponse.getBestAvailableSeats()){
 						System.out.println("Row :"+st.getRowNo()+"Column :"+st.getColNo());
 					}
 
 					System.out.println(findAndHoldResponse.getMesaage());
 					Character userCh = input.next().toUpperCase().charAt(0);
 					while (!userCh.equals('Y') && !userCh.equals('N')) {
-						System.out.println(" Wrong Input Please enter Y or N");
+						System.out.println(" Wrong Input. Please enter either Y or N");
 						userCh = input.next().toUpperCase().charAt(0);
 					}
 					if (userCh.equals('Y')) {
 						findAndHoldRequest.setUserConfirm(true);
-						findAndHoldRequest.setCustPreferdSeats(findAndHoldResponse.getBestAvilableSeats());
+						findAndHoldRequest.setCustPreferredSeats(findAndHoldResponse.getBestAvailableSeats());
 						findAndHoldResponse = ts.findAndHoldSeats(findAndHoldRequest);
 
 						if (findAndHoldResponse.getStatus().equals(FindAndHoldResponse.Status.Sucess)) {
 							reserveAndCommitRequest.setCustmore(cust);
 							reserveAndCommitRequest.setSeatsHeld(findAndHoldResponse.getSeatsHeld());
 							reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
-							System.out.println(reserveAndCommitResponse.getMesaage());
+							System.out.println(reserveAndCommitResponse.getMessage());
 						} else {
 
 							System.out.println(findAndHoldResponse.getMesaage());
@@ -120,7 +120,7 @@ public class TicketServiceUtility {
 					System.out.println("Enter Y to reserve N to ignore");
 					Character userCh = input.next().toUpperCase().charAt(0);
 					while (!userCh.equals('Y') && !userCh.equals('N')) {
-						System.out.println(" Wrong Input Please enter Y or N");
+						System.out.println(" Wrong Input. Please enter either Y or N");
 						userCh = input.next().toUpperCase().charAt(0);
 					}
 					if (userCh.equals('Y')) {
@@ -129,7 +129,7 @@ public class TicketServiceUtility {
 						reserveAndCommitRequest.setSeatsHeld(findAndHoldResponse.getSeatsHeld());
 						reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-						System.out.println(reserveAndCommitResponse.getMesaage());
+						System.out.println(reserveAndCommitResponse.getMessage());
 					}
 
 				} else {
@@ -141,20 +141,20 @@ public class TicketServiceUtility {
 				
 			case 4:
 
-				System.out.println("Enter Customer Name \n");
+				System.out.println("Enter customer Name \n");
 				String name1 = input.next();
-				System.out.println("Enter Ph Number \n");
+				System.out.println("Enter customer Ph Number \n");
 				String phNum1 = input.next();
 				
 				while(!phNum1.matches("[0-9]{10}")){
-					System.out.println("Wrong input enter only 10 digits ");
+					System.out.println("Wrong input. Enter only 10 digits ");
 					phNum = input.next();
 				}
 				Customer cust1 = new Customer(name1, phNum1);
 				
 				System.out.println("Enter required number of seats");
 				int reqNuOfSeats = input.nextInt();
-				List<Seat> cutsPreferdSeats = new ArrayList<Seat>();
+				List<Seat> custPreferredSeats = new ArrayList<Seat>();
 				
 				for(int i=1;i<=reqNuOfSeats;){
 					
@@ -163,7 +163,7 @@ public class TicketServiceUtility {
 					
 					while(!validateRow(r)){
 						
-						System.out.println("Wrong input. Enter preferred Row only Single Character between A  to " + Constants.ENDING_ROW +" for Seat "+ i);
+						System.out.println("Wrong input. Enter preferred Row only Single Character between A to " + Constants.ENDING_ROW +" for Seat "+ i);
 						r = input.next().toUpperCase().charAt(0);
 					}
 					System.out.println("Enter preferred column only Single integer between 1 to " + Constants.NUMBER_COLUMNS+" for Seat "+ i);
@@ -175,8 +175,8 @@ public class TicketServiceUtility {
 						c = input.nextInt();
 					}
                     Seat st = new Seat(r,c);
-                    if(!contains(cutsPreferdSeats,st)){
-					cutsPreferdSeats.add(new Seat(r,c));
+                    if(!contains(custPreferredSeats,st)){
+					custPreferredSeats.add(new Seat(r,c));
 					i++;
                     }
                     else
@@ -185,8 +185,8 @@ public class TicketServiceUtility {
                     }
 					
 				}
-				findAndHoldRequest.setCustPreferdSeats(cutsPreferdSeats);
-				findAndHoldRequest.setCustmore(cust1);
+				findAndHoldRequest.setCustPreferredSeats(custPreferredSeats);
+				findAndHoldRequest.setCustomer(cust1);
 				findAndHoldResponse = ts.holdSeats(findAndHoldRequest);
 				
 				if (findAndHoldResponse.getStatus().equals(FindAndHoldResponse.Status.Sucess)) {
@@ -195,7 +195,7 @@ public class TicketServiceUtility {
 					System.out.println("Enter Y to reserve N to ignore");
 					Character userCh = input.next().toUpperCase().charAt(0);
 					while (!userCh.equals('Y') && !userCh.equals('N')) {
-						System.out.println(" Wrong Input Please enter Y or N");
+						System.out.println(" Wrong Input. Please enter either Y or N");
 						userCh = input.next().toUpperCase().charAt(0);
 					}
 					if (userCh.equals('Y')) {
@@ -204,7 +204,7 @@ public class TicketServiceUtility {
 						reserveAndCommitRequest.setSeatsHeld(findAndHoldResponse.getSeatsHeld());
 						reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-						System.out.println(reserveAndCommitResponse.getMesaage());
+						System.out.println(reserveAndCommitResponse.getMessage());
 					}
 
 				} else {
@@ -216,9 +216,9 @@ public class TicketServiceUtility {
 
 			case 5:
 				
-				System.out.println("Enter Customer Name \n");
+				System.out.println("Enter customer name \n");
 				String name2 = input.next();
-				System.out.println("Enter Ph Number \n");
+				System.out.println("Enter customer Ph number \n");
 				String phNum2 = input.next();
 				
 				while(!phNum2.matches("[0-9]{10}")){
@@ -227,11 +227,11 @@ public class TicketServiceUtility {
 				}
 				Customer cust2 = new Customer(name2, phNum2);
 
-				findAndHoldRequest.setCustmore(cust2);
+				findAndHoldRequest.setCustomer(cust2);
 
 				System.out.println("Enter required number of seats");
 				int reqNumOfSeats = input.nextInt();
-				findAndHoldRequest.setReqNumbOfSeats(reqNumOfSeats);
+				findAndHoldRequest.setReqNoOfSeats(reqNumOfSeats);
 				findAndHoldRequest.setCustPreferredRow(null);
 				findAndHoldResponse = ts.findAndHoldSeats(findAndHoldRequest);
 
@@ -241,7 +241,7 @@ public class TicketServiceUtility {
 					System.out.println("Enter Y to reserve N to ignore");
 					Character userCh = input.next().toUpperCase().charAt(0);
 					while (!userCh.equals('Y') && !userCh.equals('N')) {
-						System.out.println(" Wrong Input Please enter Y or N");
+						System.out.println(" Wrong Input. Please enter Y or N");
 						userCh = input.next().toUpperCase().charAt(0);
 					}
 					if (userCh.equals('Y')) {
@@ -250,7 +250,7 @@ public class TicketServiceUtility {
 						reserveAndCommitRequest.setSeatsHeld(findAndHoldResponse.getSeatsHeld());
 						reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-						System.out.println(reserveAndCommitResponse.getMesaage());
+						System.out.println(reserveAndCommitResponse.getMessage());
 					}
 
 				} else {
@@ -286,9 +286,9 @@ public class TicketServiceUtility {
 	}
 
 	
-	private static boolean contains(List<Seat> custmerprefedSeats, Seat st){
+	private static boolean contains(List<Seat> custPreferredSeats, Seat st){
 		
-		for(Seat custSt:custmerprefedSeats){
+		for(Seat custSt:custPreferredSeats){
 			
 			if(custSt.equals(st))
 				return true;

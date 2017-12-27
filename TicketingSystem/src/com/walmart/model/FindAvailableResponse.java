@@ -1,6 +1,6 @@
-package com.walmat.model;
+package com.walmart.model;
 
-import com.walmat.model.FindAndHoldResponse.Status;
+import com.walmart.model.FindAndHoldResponse.Status;
 
 public class FindAvailableResponse {
 	

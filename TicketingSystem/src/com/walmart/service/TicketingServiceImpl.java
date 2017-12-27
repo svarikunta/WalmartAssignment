@@ -1,10 +1,10 @@
 package com.walmart.service;
 
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.ReserveAndCommitRequest;
-import com.walmat.model.ReserveAndCommitResponse;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.ReserveAndCommitRequest;
+import com.walmart.model.ReserveAndCommitResponse;
 
 public class TicketingServiceImpl implements TicketingService {
 
@@ -14,7 +14,7 @@ public class TicketingServiceImpl implements TicketingService {
 	 * This method returns number of seats Available,Hold and Reserved.
 	 */
 	@Override
-	public FindAvailableResponse findNoOfSeatsAvilable() {
+	public FindAvailableResponse findNoOfSeatsAvailable() {
 
 		return ticketingServiceImplHelper.findNoOfSeatsAvilable();
 	}
@@ -63,7 +63,7 @@ public class TicketingServiceImpl implements TicketingService {
 	 */
 	public void displaySeatMap() {
 
-		ticketingServiceImplHelper.displayStage();
+		ticketingServiceImplHelper.displaySeatMap();
 
 	}
 

@@ -1,11 +1,11 @@
-package com.walmat.model;
+package com.walmart.model;
 
 import java.util.List;
 
 public class ReserveAndCommitResponse {
 	
 	private Status status;   
-	String mesaage;
+	String message;
 	Customer customer;
 	List<Seat> seatsReserved;
 
@@ -19,17 +19,17 @@ public class ReserveAndCommitResponse {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	public String getMesaage() {
-		return mesaage;
+	public String getMessage() {
+		return message;
 	}
-	public void setMesaage(String mesaage) {
-		this.mesaage = mesaage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public Customer getCustmore() {
+	public Customer getCustomer() {
 		return customer;
 	}
-	public void setCustmore(Customer customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 	public List<Seat> getSeatsReserved() {

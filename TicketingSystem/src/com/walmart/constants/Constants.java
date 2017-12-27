@@ -1,4 +1,4 @@
-package com.walmart.Constats;
+package com.walmart.constants;
 
 public interface Constants {
 	

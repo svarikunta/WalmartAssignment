@@ -1,4 +1,4 @@
-package com.walmat.model;
+package com.walmart.model;
 
 public class Seat {
 	
@@ -34,12 +34,12 @@ public class Seat {
 	}
 	
 	
-	public Customer getCustmore() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustmore(Customer customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
@@ -60,7 +60,7 @@ public class Seat {
 		return (this.state.equals(State.H));
 	}
 
-	public boolean isAvilable() {
+	public boolean isAvailable() {
 		return (this.state.equals(State.A));
 	}
 	

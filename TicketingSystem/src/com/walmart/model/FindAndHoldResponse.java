@@ -1,17 +1,17 @@
-package com.walmat.model;
+package com.walmart.model;
 
 import java.util.List;
 
 public class FindAndHoldResponse {
 	
 	private Status status;   
-	String mesaage;
+	String message;
 	Customer customer;
 	Character custPreferredRow;
 	Character custPreferredCol;
 	List<Seat> seatsHeld;
-	List<Seat> seatsResorved;
-	List<Seat> bestAvilableSeats;
+	List<Seat> seatsReserved;
+	List<Seat> bestAvailableSeats;
 	
 	private int totalAvailableSeats;
 	private int totalHeldSeats;
@@ -48,10 +48,10 @@ public class FindAndHoldResponse {
 		this.status = status;
 	}
 	public String getMesaage() {
-		return mesaage;
+		return message;
 	}
 	public void setMesaage(String mesaage) {
-		this.mesaage = mesaage;
+		this.message = mesaage;
 	}
 
 	public Customer getCustmore() {
@@ -78,17 +78,17 @@ public class FindAndHoldResponse {
 	public void setSeatsHeld(List<Seat> seatsHeld) {
 		this.seatsHeld = seatsHeld;
 	}
-	public List<Seat> getSeatsResorved() {
-		return seatsResorved;
+	public List<Seat> getSeatsReserved() {
+		return seatsReserved;
 	}
-	public void setSeatsResorved(List<Seat> seatsResorved) {
-		this.seatsResorved = seatsResorved;
+	public void setSeatsReserved(List<Seat> seatsReserved) {
+		this.seatsReserved = seatsReserved;
 	}
-	public List<Seat> getBestAvilableSeats() {
-		return bestAvilableSeats;
+	public List<Seat> getBestAvailableSeats() {
+		return bestAvailableSeats;
 	}
-	public void setBestAvilableSeats(List<Seat> bestAvilableSeats) {
-		this.bestAvilableSeats = bestAvilableSeats;
+	public void setBestAvailableSeats(List<Seat> bestAvailableSeats) {
+		this.bestAvailableSeats = bestAvailableSeats;
 	}
 	
 	

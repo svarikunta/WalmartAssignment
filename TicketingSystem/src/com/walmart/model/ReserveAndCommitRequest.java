@@ -1,19 +1,19 @@
-package com.walmat.model;
+package com.walmart.model;
 
 import java.util.List;
 
 public class ReserveAndCommitRequest {
 	
-	Customer Customer;
+	Customer customer;
 
 	List<Seat> seatsHeld;
 	
 	public Customer getCustmore() {
-		return Customer;
+		return customer;
 	}
 	
 	public void setCustmore(Customer customer) {
-		Customer = customer;
+		this.customer = customer;
 	}
 
 	public List<Seat> getSeatsHeld() {

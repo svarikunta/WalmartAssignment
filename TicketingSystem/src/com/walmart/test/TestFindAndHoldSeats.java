@@ -3,15 +3,15 @@ package com.walmart.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.walmart.Constats.Constants;
+import com.walmart.constants.Constants;
+import com.walmart.model.Customer;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.ReserveAndCommitRequest;
+import com.walmart.model.ReserveAndCommitResponse;
 import com.walmart.service.TicketingService;
 import com.walmart.service.TicketingServiceImpl;
-import com.walmat.model.Customer;
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.ReserveAndCommitRequest;
-import com.walmat.model.ReserveAndCommitResponse;
 
 public class TestFindAndHoldSeats {
 
@@ -28,17 +28,17 @@ public class TestFindAndHoldSeats {
 		FindAvailableResponse after = null;
 
 		Customer cust = new Customer("charly", "4795693491");
-		request.setCustmore(cust);
-		request.setReqNumbOfSeats(4);
+		request.setCustomer(cust);
+		request.setReqNoOfSeats(4);
 		request.setCustPreferredRow('C');
 
 		ts.displaySeatMap();
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		response = ts.findAndHoldSeats(request);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Sucess);
@@ -53,11 +53,11 @@ public class TestFindAndHoldSeats {
 		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
 		reserveAndCommitRequest.setCustmore(cust);
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		ReserveAndCommitResponse reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(reserveAndCommitResponse);
 		Assert.assertEquals(reserveAndCommitResponse.getStatus(), ReserveAndCommitResponse.Status.Sucess);
@@ -83,17 +83,17 @@ public class TestFindAndHoldSeats {
 		FindAvailableResponse after = null;
 
 		Customer cust = new Customer("charly", "4795693492");
-		request.setCustmore(cust);
-		request.setReqNumbOfSeats(8);
+		request.setCustomer(cust);
+		request.setReqNoOfSeats(8);
 		request.setCustPreferredRow('G');
 
 		ts.displaySeatMap();
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		response = ts.findAndHoldSeats(request);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Sucess);
@@ -108,11 +108,11 @@ public class TestFindAndHoldSeats {
 		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
 		reserveAndCommitRequest.setCustmore(cust);
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		ReserveAndCommitResponse reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(reserveAndCommitResponse);
 		Assert.assertEquals(reserveAndCommitResponse.getStatus(), ReserveAndCommitResponse.Status.Sucess);
@@ -124,15 +124,15 @@ public class TestFindAndHoldSeats {
 				after.getTotalReservedSeats());
 
 		Customer cust2 = new Customer("David", "3453456639");
-		request.setCustmore(cust2);
-		request.setReqNumbOfSeats(8);
+		request.setCustomer(cust2);
+		request.setReqNoOfSeats(8);
 		request.setCustPreferredRow('G');
 
 		response = ts.findAndHoldSeats(request);
 
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.NeedConfirm);
-		request.setCustPreferdSeats(response.getBestAvilableSeats());
+		request.setCustPreferredSeats(response.getBestAvailableSeats());
 		response = ts.holdSeats(request);
 
 		Assert.assertNotNull(response);
@@ -153,16 +153,16 @@ public class TestFindAndHoldSeats {
 		FindAvailableResponse after = null;
 
 		Customer cust = new Customer("name1", "4795669329");
-		request.setCustmore(cust);
-		request.setReqNumbOfSeats(4);
+		request.setCustomer(cust);
+		request.setReqNoOfSeats(4);
 
 		ts.displaySeatMap();
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		response = ts.findAndHoldSeats(request);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getStatus(), FindAndHoldResponse.Status.Sucess);
@@ -177,11 +177,11 @@ public class TestFindAndHoldSeats {
 		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
 		reserveAndCommitRequest.setCustmore(cust);
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 
 		ReserveAndCommitResponse reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
 
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		Assert.assertNotNull(reserveAndCommitResponse);
 		Assert.assertEquals(reserveAndCommitResponse.getStatus(), ReserveAndCommitResponse.Status.Sucess);
@@ -206,14 +206,14 @@ public class TestFindAndHoldSeats {
 		FindAvailableResponse after = null;
 
 		Customer cust = new Customer("Harry", "2334345678");
-		request.setCustmore(cust);
-		request.setReqNumbOfSeats(5);
+		request.setCustomer(cust);
+		request.setReqNoOfSeats(5);
 		request.setCustPreferredRow('B');
 		ts.displaySeatMap();
 
-		before = ts.findNoOfSeatsAvilable();
+		before = ts.findNoOfSeatsAvailable();
 		response = ts.findAndHoldSeats(request);
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 
 		ts.displaySeatMap();
 
@@ -234,7 +234,7 @@ public class TestFindAndHoldSeats {
 		reserveAndCommitRequest.setSeatsHeld(response.getSeatsHeld());
 		reserveAndCommitRequest.setCustmore(cust);
 		ReserveAndCommitResponse reserveAndCommitResponse = ts.reserveAndCommitSeats(reserveAndCommitRequest);
-		after = ts.findNoOfSeatsAvilable();
+		after = ts.findNoOfSeatsAvailable();
 		Assert.assertNotNull(reserveAndCommitResponse);
 		Assert.assertEquals(before.getTotalAvailableSeats(), after.getTotalAvailableSeats());
 		Assert.assertEquals(before.getTotalHeldSeats(), after.getTotalHeldSeats());

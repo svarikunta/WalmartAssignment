@@ -1,17 +1,17 @@
 package com.walmart.service;
 
-import com.walmat.model.FindAndHoldRequest;
-import com.walmat.model.FindAndHoldResponse;
-import com.walmat.model.FindAvailableResponse;
-import com.walmat.model.ReserveAndCommitRequest;
-import com.walmat.model.ReserveAndCommitResponse;
+import com.walmart.model.FindAndHoldRequest;
+import com.walmart.model.FindAndHoldResponse;
+import com.walmart.model.FindAvailableResponse;
+import com.walmart.model.ReserveAndCommitRequest;
+import com.walmart.model.ReserveAndCommitResponse;
 
 public interface TicketingService {
 
 	/*
-	 * This method returns number of seats Available,Hold and Reserved.
+	 * This method returns number of seats Available, Hold and Reserved.
 	 */
-	public FindAvailableResponse findNoOfSeatsAvilable();
+	public FindAvailableResponse findNoOfSeatsAvailable();
 
 	/**
 	 * This method finds available sets at customer specified row if it finds
